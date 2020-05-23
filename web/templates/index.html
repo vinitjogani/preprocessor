@@ -1,0 +1,130 @@
+<form class="center" method="POST" action="/generate">
+    <br>
+    <h1>Preprocessor</h1>
+    <table class="main">
+        <tr class="header">
+            <th></th>
+
+            <!-- Stats -->
+            <th>Data type</th>
+            <th>Nulls rate</th>
+            <th>Unique</th>
+
+            <!-- Options -->
+            <th>Exclude</th>
+            <th>Drop Nulls</th>
+            <th>One-Hot</th>
+            <th>Scale</th>
+
+        </tr>
+
+        {%for column in columns%}
+        <tr>
+            <td>{{column.name}}</td>
+
+            <!-- Stats -->
+            <td>{{column.dtype}}</td>
+            <td>{{column.null_rate}}%</td>
+            <td>{{column.unique}}</td>
+
+            <!-- Options -->
+            <td>
+                <input type="checkbox" class="inpExclude" name="exclude:{{column.name}}"
+                    {%if column.exclude()%}checked{%endif%}>
+            </td>
+            <td>
+                <input type="checkbox" class="inpDropNa" name="dropna:{{column.name}}">
+            </td>
+            <td>
+                <input type="checkbox" class="inpOneHot" name="onehot:{{column.name}}"
+                    {%if column.onehot()%}checked{%endif%}>
+            </td>
+            <td>
+                <select class="inpScale" name="scale:{{column.name}}">
+                    <option value="none">None</option>
+                    <option value="minmax">Min-Max</option>
+                    <option value="robust" {%if column.scale_robust()%}selected{%endif%}>Robust</option>
+                </select>
+            </td>
+
+        </tr>
+        {%endfor%}
+
+    </table>
+    <br><br>
+    <input type="submit" value="Generate Preprocessor">
+</form>
+
+<style>
+    body {
+        font-family: 'Calibri', sans-serif;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+        display: inline-block;
+    }
+
+    th {
+        text-align: left;
+        height: 40px;
+    }
+
+    td,
+    th {
+        min-width: 120px;
+        padding: 5px;
+        border-bottom: 1px solid #ddd;
+        box-sizing: border-box;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .header {
+        background: white;
+        top: 0;
+    }
+
+    .sticky {
+        position: fixed;
+    }
+
+    input[type=submit] {
+        background: white;
+        padding: 10px;
+        outline: none;
+        border: solid black;
+        cursor: pointer;
+    }
+
+    input[type=submit]:hover {
+        background: #ddd;
+    }
+</style>
+
+<script>
+    const sticky = document.getElementsByTagName("table")[0].offsetTop;
+    const header = document.getElementsByClassName("header")[0];
+    const reference = document.querySelector("table tr:nth-child(2)").children;
+
+    window.onscroll = function () {
+        console.log(sticky)
+
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+            for (var i = 0; i < reference.length; i++) {
+                header.children[i].style.width = reference[i].clientWidth + "px";
+            }
+
+        } else if (window.pageYOffset < sticky - header.clientHeight) {
+            header.classList.remove("sticky");
+        }
+    }
+</script>

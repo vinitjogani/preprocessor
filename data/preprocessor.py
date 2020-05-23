@@ -70,6 +70,7 @@ class Preprocessor:
 
         X = self.transform_onehot_encoder(X)
         X = self.transform_scalers(X)
+        X.fillna(0, inplace=True)
         return X
 
     def fit_transform(self, X):

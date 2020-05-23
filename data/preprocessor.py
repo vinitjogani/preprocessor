@@ -31,7 +31,7 @@ class Preprocessor:
 
         feature_names = self.onehot_encoder.get_feature_names(self.onehot)
         non_null_features = [f for f in feature_names if not f.endswith('%null%')]
-        new_df = pd.DataFrame(matrix, columns=feature_names)[non_null_features]
+        new_df = pd.DataFrame(matrix, columns=feature_names, index=filled.index)[non_null_features]
 
         others = list(set(df.columns) - set(self.onehot))
         df = pd.concat([df[others], new_df], axis=1)
@@ -49,11 +49,11 @@ class Preprocessor:
 
         if len(self.minmax):
             data = self.minmax_scaler.transform(df[self.minmax])
-            dfs.append(pd.DataFrame(data, columns=self.minmax))
+            dfs.append(pd.DataFrame(data, columns=self.minmax, index=df.index))
 
         if len(self.robust):
             data = self.robust_scaler.transform(df[self.robust])
-            dfs.append(pd.DataFrame(data, columns=self.robust))
+            dfs.append(pd.DataFrame(data, columns=self.robust, index=df.index))
 
         df = pd.concat(dfs, axis=1)
         return df
@@ -63,6 +63,7 @@ class Preprocessor:
         self.fit_onehot_encoder(X)
 
     def transform(self, X):
+        X.index = range(X.shape[0])
         include = list(set(X.columns) - set(self.exclude))
         X = X[include]
         X = self.drop_nulls(X)

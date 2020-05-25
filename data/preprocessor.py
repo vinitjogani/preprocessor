@@ -16,7 +16,7 @@ class Preprocessor:
 
         self.onehot_encoder = OneHotEncoder(handle_unknown='ignore')
         self.minmax_scaler = MinMaxScaler()
-        self.robust_scaler = QuantileTransformer(output_distribution='gaussian')
+        self.robust_scaler = QuantileTransformer(output_distribution='normal')
 
     def drop_nulls(self, df):
         remaining = df[self.dropna].dropna().index
@@ -75,6 +75,8 @@ class Preprocessor:
 
     def fit(self, X):
         self.fit_dates(X)
+        self.transform_dates(X)
+
         self.fit_scalers(X)
         self.fit_onehot_encoder(X)
 

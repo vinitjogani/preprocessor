@@ -39,6 +39,8 @@ def generate():
         'exclude': get_options("exclude"),
         'onehot': get_options("onehot"),
         'dropna': get_options("dropna"),
+        'copy': get_options("copy"),
+        'datefeats': get_options("datefeats"),
         'minmax': get_options("scale", "minmax"),
         'robust': get_options("scale", "robust"),
     }

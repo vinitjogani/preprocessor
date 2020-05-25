@@ -11,6 +11,8 @@
             <th>Unique</th>
 
             <!-- Options -->
+            <th>Copy</th>
+            <th>Date Features</th>
             <th>Exclude</th>
             <th>Drop Nulls</th>
             <th>One-Hot</th>
@@ -29,6 +31,13 @@
 
             <!-- Options -->
             <td>
+                <input type="checkbox" class="inpCopy" name="copy:{{column.name}}">
+            </td>
+            <td>
+                <input type="checkbox" class="inpDatefeats" name="datefeats:{{column.name}}"
+                    {%if column.datefeat()%}checked{%else%}disabled{%endif%}>
+            </td>
+            <td>
                 <input type="checkbox" class="inpExclude" name="exclude:{{column.name}}"
                     {%if column.exclude()%}checked{%endif%}>
             </td>
@@ -43,7 +52,7 @@
                 <select class="inpScale" name="scale:{{column.name}}">
                     <option value="none">None</option>
                     <option value="minmax">Min-Max</option>
-                    <option value="robust" {%if column.scale_robust()%}selected{%endif%}>Robust</option>
+                    <option value="robust" {%if column.scale_robust()%}selected{%endif%}>Quantile</option>
                 </select>
             </td>
 

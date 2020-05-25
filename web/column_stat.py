@@ -23,6 +23,9 @@ class Stat:
     def onehot(self):
         return self.dtype == 'object'
 
+    def datefeat(self):
+        return str(self.dtype).startswith('date')
+
     def scale_robust(self):
         return self.dtype == 'float64'
 

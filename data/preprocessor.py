@@ -62,6 +62,7 @@ class Preprocessor:
 
     def transform_dates(self, df):
         for feat in self.datefeats:
+            df[feat] = pd.to_datetime(df[feat])
             df[feat + "_day"] = df[feat].map(lambda x: x.day)
             df[feat + "_month"] = df[feat].map(lambda x: x.month)
             df[feat + "_year"] = df[feat].map(lambda x: x.year)
